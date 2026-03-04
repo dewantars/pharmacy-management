@@ -13,6 +13,7 @@ import {
 import { TransactionUpdateInput } from '../../common/database/generated/prisma/models.js';
 import { MedicineService } from '../medicine-module/medicine/medicine.service.js';
 import { TransactionData } from './interface/transaction-data.interface.js';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 const paginate = paginator({ perPage: 10, page: 1 });
 
@@ -26,6 +27,7 @@ export class TransactionService {
   constructor(
     private prisma: DatabaseService,
     private medicineService: MedicineService,
+    private event: EventEmitter2,
   ) {}
 
   async create(dto: CreateTransactionDto, id?: string): Promise<Transaction> {
@@ -73,6 +75,11 @@ export class TransactionService {
         });
 
         if (updatedMedicine.stock <= 15) {
+          this.event.emit('medicine.low-stock', {
+            medicineName: medicine.medicineName,
+            medicineStock: medicine.stock,
+            orderOperation: Date.now(),
+          });
           this.logger.warn(
             `Peringatan: Stok obat ${medicine.medicineName} rendah (${updatedMedicine.stock}).`,
           );

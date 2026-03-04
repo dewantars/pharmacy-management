@@ -16,6 +16,7 @@ import {
 } from '../../../common/database/generated/prisma/models.js';
 import { MedicineCategoryService } from '../medicine-category/medicine-category.service.js';
 import { SupplierService } from '../../supplier-module/supplier.service.js';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 const paginate = paginator({ perPage: 10, page: 1 });
 
@@ -34,6 +35,7 @@ export class MedicineService {
     private prisma: DatabaseService,
     private medicineCategoryService: MedicineCategoryService,
     private supplierService: SupplierService,
+    private event: EventEmitter2,
   ) {}
 
   async create(
@@ -68,6 +70,26 @@ export class MedicineService {
     page: number,
     perPage: number,
   ): Promise<PaginatedResult<Medicine>> {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const expiredCount = await this.prisma.medicine.count({
+      where: {
+        expiredDate: {
+          lt: today,
+        },
+      },
+    });
+
+    if (expiredCount > 0) {
+      this.event.emit('medicine.expired_detected', {
+        count: expiredCount,
+        detectedAt: new Date(),
+      });
+
+      this.logger.warn(`${expiredCount} obat kedaluwarsa ditemukan.`);
+    }
+
     return paginate(
       this.prisma.medicine,
       {
