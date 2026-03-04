@@ -34,9 +34,7 @@ export class MedicineOrderService {
       let grandTotal = 0;
       const orderItemsData: Medicines[] = [];
 
-      // Loop untuk validasi stok dan perhitungan harga
       for (const item of medicines) {
-        // Ambil data obat terbaru di dalam transaksi
         const medicine = await tx.medicine.findUnique({
           where: { id: item.medicineId },
         });
@@ -47,14 +45,12 @@ export class MedicineOrderService {
           );
         }
 
-        // Cek kecukupan stok (seperti PHP: if ($medicine->stock < $item['quantity']))
         if (medicine.stock < item.quantity) {
           throw new BadRequestException(
             `Stok ${medicine.medicineName} tidak cukup. Sisa stok: ${medicine.stock}`,
           );
         }
 
-        // Kurangi stok (seperti PHP: $medicine->decrement('stock'))
         const updatedMedicine = await tx.medicine.update({
           where: { id: item.medicineId },
           data: {
@@ -67,7 +63,6 @@ export class MedicineOrderService {
         const subtotal = medicine.price * item.quantity;
         grandTotal += subtotal;
 
-        // Siapkan data untuk nested create OrderDetails
         orderItemsData.push({
           medicineId: item.medicineId,
           quantity: item.quantity,
@@ -87,7 +82,7 @@ export class MedicineOrderService {
         }
       }
 
-      // Validasi pembayaran (Opsional: jika ada field cashReceived di DTO)
+      // Validasi pembayaran
       // if (dto.cashReceived < grandTotal) {
       //   throw new BadRequestException(`Uang pembayaran kurang! Total: ${grandTotal}`);
       // }
