@@ -1,15 +1,15 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateSupplierDto } from './dto/create-supplier.dto.js';
 import { UpdateSupplierDto } from './dto/update-supplier.dto.js';
-import { DatabaseService } from '../../common/database/database.service.js';
+import { DatabaseService } from '../../../common/database/database.service.js';
 import {
   Prisma,
   Supplier,
-} from '../../common/database/generated/prisma/client.js';
+} from '../../../common/database/generated/prisma/client.js';
 import {
   PaginatedResult,
   paginator,
-} from '../../common/pagination/pagination.js';
+} from '../../../common/pagination/pagination.js';
 
 const paginate = paginator({ perPage: 10, page: 1 });
 

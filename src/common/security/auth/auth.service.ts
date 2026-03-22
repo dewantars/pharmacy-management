@@ -1,19 +1,19 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { UserService } from '../../../module/user-module/user.service.js';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../../database/generated/prisma/client.js';
 import * as bcrypt from 'bcrypt';
+import { EmployeeService } from '../../../module/user-manage-module/employee-module/employee.service.js';
 
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
   constructor(
-    private readonly userService: UserService,
+    private readonly employeeService: EmployeeService,
     private jwtService: JwtService,
   ) {}
 
   async validateUser(email: string, password: string): Promise<User | null> {
-    const user = await this.userService.findByEmail(email);
+    const user = await this.employeeService.findByEmail(email);
     if (!user) {
       return null;
     }

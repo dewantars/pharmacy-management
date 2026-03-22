@@ -7,27 +7,27 @@ import {
   Param,
   Delete,
   Query,
-  UseGuards,
+  // UseGuards,
 } from '@nestjs/common';
 import { SupplierService } from './supplier.service.js';
 import { CreateSupplierDto } from './dto/create-supplier.dto.js';
 import { UpdateSupplierDto } from './dto/update-supplier.dto.js';
-import { AuthGuard } from '@nestjs/passport';
-import { Roles } from '../../common/security/guards/roles.decorator.js';
+// import { AuthGuard } from '@nestjs/passport';
+// import { Roles } from '../../../common/security/guards/roles.decorator.js';
 
 @Controller()
-@UseGuards(AuthGuard('jwt'))
+// @UseGuards(AuthGuard('jwt'))
 export class SupplierController {
   constructor(private readonly supplierService: SupplierService) {}
 
   @Post()
-  @Roles('PHARMACIST', 'OWNER')
+  // @Roles('PHARMACIST', 'OWNER')
   create(@Body() createSupplierDto: CreateSupplierDto) {
     return this.supplierService.create(createSupplierDto);
   }
 
   @Get()
-  @Roles('ADMIN', 'PHARMACIST', 'OWNER')
+  // @Roles('ADMIN', 'PHARMACIST', 'OWNER')
   findAll(@Query('page') page?: number, @Query('perPage') perPage?: number) {
     return this.supplierService.findAll(page!, perPage!);
   }
@@ -38,7 +38,7 @@ export class SupplierController {
   }
 
   @Patch(':id')
-  @Roles('PHARMACIST')
+  // @Roles('PHARMACIST')
   update(
     @Param('id') id: string,
     @Body() updateSupplierDto: UpdateSupplierDto,
@@ -47,7 +47,7 @@ export class SupplierController {
   }
 
   @Delete(':id')
-  @Roles('PHARMACIST')
+  // @Roles('PHARMACIST')
   remove(@Param('id') id: string) {
     return this.supplierService.remove(id);
   }

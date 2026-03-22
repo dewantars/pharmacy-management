@@ -12,19 +12,19 @@ import {
   ActiveStatus,
   Role,
   Shift,
-} from '../../../common/database/generated/prisma/enums.js';
+} from '../../../../common/database/generated/prisma/enums.js';
 import { Type } from 'class-transformer';
 
-export class CreateUserDto {
+export class CreateEmployeeDto {
   @IsNotEmpty({
     message: 'User Name is required',
   })
-  readonly name: string;
+  readonly name!: string;
 
   @IsNotEmpty({
     message: 'employee id is required',
   })
-  readonly empId: string;
+  readonly empId!: string;
 
   @IsNotEmpty({
     message: 'email is required',
@@ -40,7 +40,7 @@ export class CreateUserDto {
       message: 'Email must be an valid email',
     },
   )
-  readonly email: string;
+  readonly email!: string;
 
   @IsNotEmpty({
     message: 'password is required',
@@ -56,13 +56,13 @@ export class CreateUserDto {
         'password must contain at least greater than 4 characters, 2 uppercase, and 3 numbers, ex: JhonDoe-123',
     },
   )
-  password: string;
+  password!: string;
 
   @IsOptional()
   @IsPhoneNumber('ID', {
     message: 'phone number an valid indonesia phone number',
   })
-  readonly phoneNumber: string;
+  readonly phoneNumber!: string;
 
   @IsNotEmpty({
     message: 'User Role is required',
@@ -71,13 +71,13 @@ export class CreateUserDto {
     message:
       'USer Role is not valid choose between ADMIN, OWNER, PHARMACIST, and CASHIER',
   })
-  readonly role: Role;
+  readonly role!: Role;
 
   @IsNotEmpty({
     message: '',
   })
   @IsEnum(Shift)
-  readonly shift: Shift;
+  readonly shift!: Shift;
 
   @IsNotEmpty({
     message: '',
@@ -85,31 +85,31 @@ export class CreateUserDto {
   @IsEnum(ActiveStatus, {
     message: 'Active Status is not valid choose between ACTIVE and INACTIVE',
   })
-  readonly status: ActiveStatus;
+  readonly status!: ActiveStatus;
 
   @IsOptional()
   @IsDate()
-  readonly dateOfBirth: Date;
+  readonly dateOfBirth!: Date;
 
   @IsOptional()
   @MinLength(7, {
     message: 'Address is must greater than 7 Character',
   })
-  readonly address: string;
+  readonly address!: string;
 
   @IsOptional()
-  profileAvatar: string;
+  profileAvatar!: string;
 
   @IsNotEmpty({
     message: 'employee salary is required',
   })
   @Type(() => Number)
-  readonly salary: number;
+  readonly salary!: number;
 
   @IsDate()
   @IsNotEmpty({
     message: 'employee start work is required',
   })
   @Type(() => Date)
-  readonly startDate: Date;
+  readonly startDate!: Date;
 }
