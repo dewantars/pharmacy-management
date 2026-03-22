@@ -37,7 +37,7 @@ import { AppController } from './app.controller.js';
         module: MainAppModule,
         children: [
           {
-            path: 'authenticate',
+            path: 'auth',
             module: AuthModule,
           },
           {

@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 export interface PaginatedResult<T> {
   data: T[];
   meta: {
@@ -10,20 +13,25 @@ export interface PaginatedResult<T> {
   };
 }
 
-export type PaginateOptions = { page?: number | string; perPage?: number | string };
+export type PaginateOptions = {
+  page?: number | string;
+  perPage?: number | string;
+};
 export type PaginateFunction = <T, K>(
   model: any,
   args?: K,
   options?: PaginateOptions,
 ) => Promise<PaginatedResult<T>>;
 
-export const paginator = (defaultOptions: PaginateOptions): PaginateFunction => {
+export const paginator = (
+  defaultOptions: PaginateOptions,
+): PaginateFunction => {
   return async (model, args: any = {}, options) => {
-    const page = Number(options?.page|| defaultOptions?.page) || 1;
+    const page = Number(options?.page || defaultOptions?.page) || 1;
     const perPage = Number(options?.perPage || defaultOptions?.perPage) || 10;
 
     const skip = page > 0 ? perPage * (page - 1) : 0;
-    
+
     // Run two queries in parallel (faster)
     const [total, data] = await Promise.all([
       model.count({ where: args.where }),

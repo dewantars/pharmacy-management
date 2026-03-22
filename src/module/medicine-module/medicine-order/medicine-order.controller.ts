@@ -7,18 +7,18 @@ import {
   Param,
   Delete,
   Query,
-  UseGuards,
+  // UseGuards,
 } from '@nestjs/common';
 import { MedicineOrderService } from './medicine-order.service.js';
 import { CreateMedicineOrderDto } from './dto/create-medicine-order.dto.js';
 import { UpdateMedicineOrderDto } from './dto/update-medicine-order.dto.js';
-import { AuthGuard } from '@nestjs/passport';
+// import { AuthGuard } from '@nestjs/passport';
 // import { User } from '../../../common/security/guards/user.decorator.js';
-import { Roles } from '../../../common/security/guards/roles.decorator.js';
+// import { Roles } from '../../../common/security/guards/roles.decorator.js';
 
 @Controller()
-@Roles('PHARMACIST', 'ADMIN', 'OWNER')
-@UseGuards(AuthGuard('jwt'))
+// @Roles('PHARMACIST', 'ADMIN', 'OWNER')
+// @UseGuards(AuthGuard('jwt'))
 export class MedicineOrderController {
   constructor(private readonly medicineOrderService: MedicineOrderService) {}
 

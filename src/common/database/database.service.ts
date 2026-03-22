@@ -14,14 +14,14 @@ export class DatabaseService
       database: configService.get<string>('POSTGRE_DB'),
       host: configService.get<string>('POSTGRE_HOST'),
       port: configService.get<number>('POSTGRE_PORT'),
-      user: configService.get<string>('PODTGRE_USER'),
+      user: configService.get<string>('POSTGRE_USER'),
       password: configService.get<string>('POSTGRE_PASSWORD'),
     });
     // const adapter = new PrismaNeon({
     //   application_name: 'pharma-ease',
     //   connectionString: env('DATABASE_URL_NEON'),
     // });
-    super({ adapter });
+    super({ adapter: adapter });
   }
 
   async onModuleInit() {

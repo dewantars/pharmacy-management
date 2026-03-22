@@ -1,9 +1,9 @@
-import { Controller, Delete, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Query } from '@nestjs/common';
 import { OrderDetailService } from './order-detail.service.js';
-import { AuthGuard } from '@nestjs/passport';
+// import { AuthGuard } from '@nestjs/passport';
 
 @Controller()
-@UseGuards(AuthGuard('jwt'))
+// @UseGuards(AuthGuard('jwt'))
 export class OrderDetailController {
   constructor(private readonly orderDetailService: OrderDetailService) {}
 

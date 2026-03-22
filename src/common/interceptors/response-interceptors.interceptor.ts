@@ -33,7 +33,7 @@ export class ResponseInterceptors<T> implements NestInterceptor<
 
     switch (request.method) {
       case 'POST':
-        defaultMessage = 'Data created successfully.';
+        defaultMessage = 'Post Operation successfully.';
         break;
       case 'GET':
         defaultMessage = 'Data retrieved successfully.';
