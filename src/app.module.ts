@@ -11,8 +11,6 @@ import { MedicineMainModule } from './module/medicine-module/medicine-main.modul
 import { MedicineModule } from './module/medicine-module/medicine/medicine.module.js';
 import { MedicineCategoryModule } from './module/medicine-module/medicine-category/medicine-category.module.js';
 import { MedicineOrderModule } from './module/medicine-module/medicine-order/medicine-order.module.js';
-import { SupplierModule } from './module/supplier-module/supplier.module.js';
-import { UserModule } from './module/user-module/user.module.js';
 import { ActivityLogModule } from './module/logs-module/activity-log.module.js';
 import { AuthModule } from './common/security/auth/auth.module.js';
 import { RolesGuard } from './common/security/guards/roles.guard.js';
@@ -20,6 +18,8 @@ import { OrderDetailModule } from './module/medicine-module/medicine-order/order
 import { TransactionModule } from './module/transaction-module/transaction.module.js';
 import { TransactionDetailModule } from './module/transaction-module/transaction-detail/transaction-detail.module.js';
 import { AppController } from './app.controller.js';
+import { EmployeeModule } from './module/user-manage-module/employee-module/employee.module.js';
+import { SupplierModule } from './module/user-manage-module/supplier-module/supplier.module.js';
 
 @Module({
   imports: [
@@ -59,8 +59,8 @@ import { AppController } from './app.controller.js';
             module: SupplierModule,
           },
           {
-            path: 'users',
-            module: UserModule,
+            path: 'employees',
+            module: EmployeeModule,
           },
           {
             path: 'activity-logs',
