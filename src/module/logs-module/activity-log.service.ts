@@ -42,7 +42,7 @@ export class ActivityLogService {
     return await this.prisma.activityLog.findUniqueOrThrow({
       where: { id },
       include: {
-        user: true,
+        employee: true,
       },
     });
   }

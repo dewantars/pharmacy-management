@@ -34,7 +34,7 @@ export class ActivityTrackingInterceptor implements NestInterceptor {
 
           const createPayload: CreateActivityLogDto = {
             action: method,
-            userId: user.id,
+            employeeId: user.id,
             resourceType: resourceType[3] ?? resourceType[2],
             resourceId: resourceId,
             payloadData: body as Record<string, any>,

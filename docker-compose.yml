@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: pharmacy_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRE_USER}
+      POSTGRES_PASSWORD: ${POSTGRE_PASSWORD}
+      POSTGRES_DB: ${POSTGRE_DB}
+    ports:
+      - "${POSTGRE_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

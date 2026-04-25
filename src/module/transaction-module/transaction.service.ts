@@ -18,7 +18,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 const paginate = paginator({ perPage: 10, page: 1 });
 
 type TransactionDataWithRelation = Prisma.TransactionGetPayload<{
-  include: { _count: true; transactionDetails: true; user: true };
+  include: { _count: true; transactionDetails: true; employee: true };
 }>;
 
 @Injectable()
@@ -31,7 +31,7 @@ export class TransactionService {
   ) {}
 
   async create(dto: CreateTransactionDto, id?: string): Promise<Transaction> {
-    const { userId, medicines, transactionDate } = dto;
+    const { employeeId, medicines, transactionDate } = dto;
 
     return await this.prisma.$transaction(async (tx) => {
       let grandTotal = 0;
@@ -97,8 +97,8 @@ export class TransactionService {
           transactionDate: transactionDate,
           transactionCode: `TRC-${Math.random().toString(36).substring(2, 10).toUpperCase()}`,
           totalPrice: grandTotal,
-          user: {
-            connect: { id: id ?? userId },
+          employee: {
+            connect: { id: id ?? employeeId },
           },
           transactionDetails: {
             create: orderItemsData,
@@ -120,7 +120,7 @@ export class TransactionService {
       {
         orderBy: { createdAt: 'desc' },
         include: {
-          user: { omit: { id: true, password: true } },
+          employee: { omit: { id: true, password: true } },
           transactionDetails: true,
         },
       },
@@ -134,7 +134,7 @@ export class TransactionService {
       include: {
         _count: true,
         transactionDetails: true,
-        user: true,
+        employee: true,
       },
     });
   }

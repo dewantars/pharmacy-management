@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Query } from '@nestjs/common';
+import { Controller, Delete, Get, Query, UseGuards } from '@nestjs/common';
 import { OrderDetailService } from './order-detail.service.js';
 import { AuthGuard } from '@nestjs/passport';
 

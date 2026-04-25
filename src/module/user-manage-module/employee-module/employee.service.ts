@@ -130,7 +130,7 @@ export class EmployeeService {
   }
 
   async findByEmail(email: string): Promise<Employee | null> {
-    return this.prisma.employee.findUnique({
+    return this.prisma.employee.findFirst({
       where: { email: email },
     });
   }
