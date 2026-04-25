@@ -9,8 +9,6 @@ branches: [ "main" ]
 jobs:
 build-and-test:
 runs-on: ubuntu-latest
-
-```
 steps:
   # 1. Checkout code
   - name: Checkout repository
@@ -38,4 +36,3 @@ steps:
   # 6. Run tests
   - name: Run tests
     run: npm run test
-```
