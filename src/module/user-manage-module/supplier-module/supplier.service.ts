@@ -57,6 +57,19 @@ export class SupplierService {
     return supplier;
   }
 
+  // (3) DINA — menambahkan fitur/function pencarian supplier berdasarkan nama
+  async searchByName(name: string): Promise<Supplier[]> {
+    return this.prisma.supplier.findMany({
+      where: {
+        supplierName: {
+          contains: name,
+          mode: 'insensitive',
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
   async update(id: string, dto: UpdateSupplierDto): Promise<Supplier> {
     return this.prisma.supplier.update({
       where: { id },

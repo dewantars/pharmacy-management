@@ -123,6 +123,33 @@ export class MedicineService {
     });
   }
 
+  // (1) DINA — menambahkan fitur/function pencarian obat berdasarkan nama
+  async searchByName(name: string): Promise<Medicine[]> {
+    return this.prisma.medicine.findMany({
+      where: {
+        medicineName: {
+          contains: name,
+          mode: 'insensitive',
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  // (2) DINA — menambahkan fitur/function mendapatkan obat yang sudah kedaluwarsa
+  async getExpiredMedicines(): Promise<Medicine[]> {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return this.prisma.medicine.findMany({
+      where: {
+        expiredDate: {
+          lt: today,
+        },
+      },
+      orderBy: { expiredDate: 'asc' },
+    });
+  }
+
   async update(
     id: string,
     dto: UpdateMedicineDto,

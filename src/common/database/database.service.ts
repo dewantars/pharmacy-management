@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { PrismaPg } from '@prisma/adapter-pg';
 // import { PrismaNeon } from '@prisma/adapter-neon';
-import { PrismaClient } from './generated/prisma/client.js';
+import { PrismaClient } from '../../generated/prisma/client.js';
 import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class DatabaseService
