@@ -11,19 +11,18 @@ import {
   ParseIntPipe,
   DefaultValuePipe,
 } from '@nestjs/common';
-import { TransactionService } from './transaction.service.js';
-import { CreateTransactionDto } from './dto/create-transaction.dto.js';
-import { UpdateTransactionDto } from './dto/update-transaction.dto.js';
-import { FilterTransactionDto } from './dto/filter-transaction.dto.js';
-import { User } from '../../common/security/guards/user.decorator.js';
+import { TransactionService } from './transaction.service';
+import { CreateTransactionDto } from './dto/create-transaction.dto';
+import { UpdateTransactionDto } from './dto/update-transaction.dto';
+import { User } from '../../common/security/guards/user.decorator';
 import { AuthGuard } from '@nestjs/passport';
-import { Roles } from '../../common/security/guards/roles.decorator.js';
+import { Roles } from '../../common/security/guards/roles.decorator';
 
 @Controller()
 @Roles('OWNER')
 @UseGuards(AuthGuard('jwt'))
 export class TransactionController {
-  constructor(private readonly transactionService: TransactionService) {}
+  constructor(private readonly transactionService: TransactionService) { }
 
   @Post()
   @Roles('CASHIER')

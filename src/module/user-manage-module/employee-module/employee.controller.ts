@@ -10,14 +10,14 @@ import {
   UploadedFile,
   Query,
 } from '@nestjs/common';
-import { EmployeeService } from './employee.service.js';
-import { CreateEmployeeDto } from './dto/create-employee.dto.js';
-import { UpdateEmployeeDto } from './dto/update-employee.dto.js';
+import { EmployeeService } from './employee.service';
+import { CreateEmployeeDto } from './dto/create-employee.dto';
+import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller()
 export class EmployeeController {
-  constructor(private readonly employeeService: EmployeeService) {}
+  constructor(private readonly employeeService: EmployeeService) { }
 
   @Post()
   @UseInterceptors(FileInterceptor('profileAvatar'))

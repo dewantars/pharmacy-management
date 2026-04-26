@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { OperationalReportController } from './operational-report.controller.js';
-import { OperationalReportService } from './operational-report.service.js';
+import { OperationalReportController } from 'src/module/report-module/operational-report/operational-report.controller';
+import { OperationalReportService } from 'src/module/report-module/operational-report/operational-report.service';
 
 describe('OperationalReportController', () => {
   let controller: OperationalReportController;

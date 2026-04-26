@@ -159,13 +159,11 @@ export class EmployeeService {
     let years = now.getFullYear() - start.getFullYear();
     let months = now.getMonth() - start.getMonth();
 
-    // adjust bulan
     if (months < 0) {
       years--;
       months += 12;
     }
 
-    // adjust hari
     if (now.getDate() < start.getDate()) {
       months--;
       if (months < 0) {
@@ -174,7 +172,6 @@ export class EmployeeService {
       }
     }
 
-    // safety biar gak negatif
     if (years < 0) years = 0;
     if (months < 0) months = 0;
 

@@ -3,12 +3,12 @@ import { CreateActivityLogDto } from './dto/create-activity-log.dto.js';
 import {
   PaginatedResult,
   paginator,
-} from '../../common/helpers/pagination/pagination.js';
+} from '../../common/helpers/pagination/pagination';
 import {
   ActivityLog,
   Prisma,
 } from '../../common/database/generated/prisma/client.js';
-import { DatabaseService } from '../../common/database/database.service.js';
+import { DatabaseService } from '../../common/database/database.service';
 
 const paginate = paginator({ perPage: 10 });
 
@@ -30,10 +30,21 @@ export class ActivityLogService {
   async findAll(
     page: number,
     perPage: number,
+    action?: string,
+    employeeId?: string,
+    sort: 'asc' | 'desc' = 'desc',
   ): Promise<PaginatedResult<ActivityLog>> {
     return await paginate(
       this.prisma.activityLog,
-      { orderBy: { createdAt: 'desc' } },
+      {
+        where: {
+          ...(action && {action}),
+          ...(employeeId && {employeeId}),
+        },
+        orderBy: {
+          createdAt: sort,
+        },
+      },
       { page, perPage },
     );
   }

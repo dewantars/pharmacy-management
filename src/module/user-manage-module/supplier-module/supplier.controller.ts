@@ -9,16 +9,16 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { SupplierService } from './supplier.service.js';
-import { CreateSupplierDto } from './dto/create-supplier.dto.js';
-import { UpdateSupplierDto } from './dto/update-supplier.dto.js';
+import { SupplierService } from './supplier.service';
+import { CreateSupplierDto } from './dto/create-supplier.dto';
+import { UpdateSupplierDto } from './dto/update-supplier.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { Roles } from '../../../common/security/guards/roles.decorator.js';
+import { Roles } from '../../../common/security/guards/roles.decorator';
 
 @Controller()
 @UseGuards(AuthGuard('jwt'))
 export class SupplierController {
-  constructor(private readonly supplierService: SupplierService) {}
+  constructor(private readonly supplierService: SupplierService) { }
 
   @Post()
   @Roles('PHARMACIST', 'OWNER')
@@ -30,6 +30,13 @@ export class SupplierController {
   @Roles('ADMIN', 'PHARMACIST', 'OWNER')
   findAll(@Query('page') page?: number, @Query('perPage') perPage?: number) {
     return this.supplierService.findAll(page!, perPage!);
+  }
+
+  // (3) DINA — menambahkan endpoint pencarian supplier berdasarkan nama
+  @Get('search')
+  @Roles('ADMIN', 'PHARMACIST', 'OWNER')
+  searchByName(@Query('name') name: string) {
+    return this.supplierService.searchByName(name);
   }
 
   @Get(':id')
