@@ -1,5 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MedicineService } from 'src/module/medicine-module/medicine/medicine.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+
+jest.mock('../../../../src/common/database/database.service');
+jest.mock('../../../../src/module/medicine-module/medicine-category/medicine-category.service');
+jest.mock('../../../../src/module/user-manage-module/supplier-module/supplier.service');
+
+import { MedicineService } from '../../../../src/module/medicine-module/medicine/medicine.service';
+import { DatabaseService } from '../../../../src/common/database/database.service';
+import { MedicineCategoryService } from '../../../../src/module/medicine-module/medicine-category/medicine-category.service';
+import { SupplierService } from '../../../../src/module/user-manage-module/supplier-module/supplier.service';
+
+const mockPrisma = {
+  medicine: {
+    findMany: jest.fn(),
+  },
+};
 
 describe('MedicineService', () => {
   let service: MedicineService;

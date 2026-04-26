@@ -3,8 +3,13 @@ jest.mock('../../../../src/module/medicine-module/medicine-category/medicine-cat
 jest.mock('../../../../src/module/user-manage-module/supplier-module/supplier.service');
 
 import { Test, TestingModule } from '@nestjs/testing';
-import { MedicineController } from 'src/module/medicine-module/medicine/medicine.controller';
-import { MedicineService } from 'src/module/medicine-module/medicine/medicine.service';
+import { MedicineController } from '../../../../src/module/medicine-module/medicine/medicine.controller';
+import { MedicineService } from '../../../../src/module/medicine-module/medicine/medicine.service';
+
+const mockMedicineService = {
+  searchByName: jest.fn(),
+  getExpiredMedicines: jest.fn(),
+};
 
 describe('MedicineController', () => {
   let controller: MedicineController;
