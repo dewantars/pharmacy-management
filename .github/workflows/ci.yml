@@ -38,6 +38,9 @@ jobs:
 
       - name: Run tests coverage
         run: npm run test:cov
+
+      - name: Security Audit
+        run: npm audit --audit-level=high
       
       - name: SonarQube Scan
         run: |
