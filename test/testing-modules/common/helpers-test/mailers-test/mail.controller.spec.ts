@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MailController } from './mail.controller.js';
-import { MailService } from './mail.service.js';
+import { MailController } from 'src/common/helpers/mail/mail.controller';
+import { MailService } from 'src/common/helpers/mail/mail.service';
 
 describe('MailController', () => {
   let controller: MailController;

@@ -9,16 +9,16 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { SupplierService } from './supplier.service.js';
-import { CreateSupplierDto } from './dto/create-supplier.dto.js';
-import { UpdateSupplierDto } from './dto/update-supplier.dto.js';
+import { SupplierService } from './supplier.service';
+import { CreateSupplierDto } from './dto/create-supplier.dto';
+import { UpdateSupplierDto } from './dto/update-supplier.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { Roles } from '../../../common/security/guards/roles.decorator.js';
+import { Roles } from '../../../common/security/guards/roles.decorator';
 
 @Controller()
 @UseGuards(AuthGuard('jwt'))
 export class SupplierController {
-  constructor(private readonly supplierService: SupplierService) {}
+  constructor(private readonly supplierService: SupplierService) { }
 
   @Post()
   @Roles('PHARMACIST', 'OWNER')
