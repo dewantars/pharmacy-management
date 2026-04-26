@@ -1,13 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ActivityLogService } from '../activity-log.service.js';
+import { ActivityLogService } from '../../../../src/module/logs-module/activity-log.service';
+import { DatabaseService } from '../../../../src/common/database/database.service';
+
 describe('ActivityLogService', () => {
   let service: ActivityLogService;
 
   const mockDatabaseService = {
     activityLog: {
-      create: jest.fn(),
       findUniqueOrThrow: jest.fn(),
       delete: jest.fn(),
+      create: jest.fn(),
     },
   };
 
@@ -29,11 +31,27 @@ describe('ActivityLogService', () => {
     jest.clearAllMocks();
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  it('TC-01 should find one log', async () => {
+    mockDatabaseService.activityLog.findUniqueOrThrow.mockResolvedValue({
+      id: 'LOG01',
+    });
+
+    const result = await service.findOne('LOG01');
+
+    expect(result).toEqual({ id: 'LOG01' });
   });
 
-  it('TC-01 should create log', async () => {
+  it('TC-02 should remove log', async () => {
+    mockDatabaseService.activityLog.delete.mockResolvedValue({
+      id: 'LOG01',
+    });
+
+    const result = await service.remove('LOG01');
+
+    expect(result).toEqual({ id: 'LOG01' });
+  });
+
+  it('TC-03 should create log', async () => {
     const dto = {
       action: 'CREATE',
       employeeId: 'EMP01',
@@ -47,25 +65,5 @@ describe('ActivityLogService', () => {
     const result = await service.create(dto);
 
     expect(result).toEqual(dto);
-  });
-
-  it('TC-02 should find one log', async () => {
-    mockDatabaseService.activityLog.findUniqueOrThrow.mockResolvedValue({
-      id: 'LOG01',
-    });
-
-    const result = await service.findOne('LOG01');
-
-    expect(result).toEqual({ id: 'LOG01' });
-  });
-
-  it('TC-03 should remove log', async () => {
-    mockDatabaseService.activityLog.delete.mockResolvedValue({
-      id: 'LOG01',
-    });
-
-    const result = await service.remove('LOG01');
-
-    expect(result).toEqual({ id: 'LOG01' });
   });
 });
