@@ -29,17 +29,9 @@ export class CreateEmployeeDto {
   @IsNotEmpty({
     message: 'email is required',
   })
-  @IsEmail(
-    {
-      allow_utf8_local_part: true,
-      allow_display_name: true,
-      allow_underscores: true,
-      domain_specific_validation: true,
-    },
-    {
-      message: 'Email must be an valid email',
-    },
-  )
+  @IsEmail({}, {
+    message: 'Email must be an valid email',
+  })
   readonly email!: string;
 
   @IsNotEmpty({
@@ -50,6 +42,8 @@ export class CreateEmployeeDto {
       minLength: 4,
       minUppercase: 2,
       minNumbers: 3,
+      minLowercase: 0,
+      minSymbols: 0,
     },
     {
       message:
