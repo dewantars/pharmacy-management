@@ -32,6 +32,41 @@ export class MedicineController {
     return this.medicineService.findAll(page!, perPage!);
   }
 
+  // (1) DHEA — menambahkan endpoint mendapatkan daftar obat dengan stok rendah
+  @Get('low-stock')
+  @Roles('PHARMACIST', 'ADMIN', 'OWNER')
+  findLowStock(@Query('threshold') threshold?: string) {
+    return this.medicineService.findLowStock(Number(threshold) || 10);
+  }
+
+  // (2) DHEA — menambahkan endpoint mendapatkan daftar obat berdasarkan kategori
+  @Get('category')
+  @Roles('PHARMACIST', 'ADMIN', 'OWNER')
+  findByCategory(@Query('categoryId') categoryId: string) {
+    return this.medicineService.findByCategory(categoryId);
+  }
+
+  // (3) DHEA — menambahkan endpoint mendapatkan daftar obat berdasarkan supplier
+  @Get('supplier')
+  @Roles('PHARMACIST', 'ADMIN', 'OWNER')
+  findBySupplier(@Query('supplierId') supplierId: string) {
+    return this.medicineService.findBySupplier(supplierId);
+  }
+  
+  // (1) DINA — menambahkan endpoint pencarian obat berdasarkan nama
+  @Get('search')
+  @Roles('PHARMACIST', 'ADMIN', 'OWNER')
+  searchByName(@Query('name') name: string) {
+    return this.medicineService.searchByName(name);
+  }
+
+  // (2) DINA - menambahkan endpoint mendapatkan obat yang sudah kedaluwarsa
+  @Get('expired')
+  @Roles('PHARMACIST', 'ADMIN', 'OWNER')
+  getExpiredMedicines() {
+    return this.medicineService.getExpiredMedicines();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.medicineService.findOne(id);
