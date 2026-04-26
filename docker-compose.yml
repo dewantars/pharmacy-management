@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   postgres:
-    image: postgres:15-alpine
+    image: postgres:15
     container_name: pharmacy_db
     restart: unless-stopped
     environment:
