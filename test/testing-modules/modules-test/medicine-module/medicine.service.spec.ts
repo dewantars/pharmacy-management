@@ -86,18 +86,9 @@ describe('MedicineService', () => {
       const result = await service.findLowStock(10);
 
       expect(mockPrisma.medicine.findMany).toHaveBeenCalledWith({
-        where: {
-          stock: {
-            lte: 10,
-          },
-        },
-        include: {
-          category: true,
-          supplier: true,
-        },
-        orderBy: {
-          stock: 'asc',
-        },
+        where: { stock: { lte: 10 } },
+        include: { category: true, supplier: true },
+        orderBy: { stock: 'asc' },
       });
 
       expect(result).toEqual(mockLowStock);
@@ -109,18 +100,9 @@ describe('MedicineService', () => {
       const result = await service.findLowStock();
 
       expect(mockPrisma.medicine.findMany).toHaveBeenCalledWith({
-        where: {
-          stock: {
-            lte: 10,
-          },
-        },
-        include: {
-          category: true,
-          supplier: true,
-        },
-        orderBy: {
-          stock: 'asc',
-        },
+        where: { stock: { lte: 10 } },
+        include: { category: true, supplier: true },
+        orderBy: { stock: 'asc' },
       });
 
       expect(result).toEqual([]);
@@ -140,16 +122,9 @@ describe('MedicineService', () => {
       const result = await service.findByCategory('category-1');
 
       expect(mockPrisma.medicine.findMany).toHaveBeenCalledWith({
-        where: {
-          categoryId: 'category-1',
-        },
-        include: {
-          category: true,
-          supplier: true,
-        },
-        orderBy: {
-          createdAt: 'desc',
-        },
+        where: { categoryId: 'category-1' },
+        include: { category: true, supplier: true },
+        orderBy: { createdAt: 'desc' },
       });
 
       expect(result).toEqual(mockResult);
@@ -176,16 +151,9 @@ describe('MedicineService', () => {
       const result = await service.findBySupplier('sup-1');
 
       expect(mockPrisma.medicine.findMany).toHaveBeenCalledWith({
-        where: {
-          supplierId: 'sup-1',
-        },
-        include: {
-          category: true,
-          supplier: true,
-        },
-        orderBy: {
-          createdAt: 'desc',
-        },
+        where: { supplierId: 'sup-1' },
+        include: { category: true, supplier: true },
+        orderBy: { createdAt: 'desc' },
       });
 
       expect(result).toEqual(mockResult);

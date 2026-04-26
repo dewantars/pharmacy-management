@@ -154,17 +154,6 @@ export class MedicineService {
     });
   }
 
-  async findOne(id: string): Promise<MedicineWithRelations> {
-    return this.prisma.medicine.findUniqueOrThrow({
-      where: { id: id },
-      include: {
-        _count: true,
-        category: true,
-        supplier: true,
-      },
-    });
-  }
-
   // (3) DHEA — menambahkan fitur/function mendapatkan daftar obat berdasarkan supplier
   async findBySupplier(supplierId: string): Promise<Medicine[]> {
     return this.prisma.medicine.findMany({
@@ -180,6 +169,18 @@ export class MedicineService {
       },
     });
   }
+
+  async findOne(id: string): Promise<MedicineWithRelations> {
+    return this.prisma.medicine.findUniqueOrThrow({
+      where: { id: id },
+      include: {
+        _count: true,
+        category: true,
+        supplier: true,
+      },
+    });
+  }
+
   // (1) DINA — menambahkan fitur/function pencarian obat berdasarkan nama
   async searchByName(name: string): Promise<Medicine[]> {
     return this.prisma.medicine.findMany({

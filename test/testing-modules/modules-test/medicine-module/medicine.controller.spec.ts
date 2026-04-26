@@ -9,7 +9,7 @@ import { MedicineService } from '../../../../src/module/medicine-module/medicine
 const mockMedicineService = {
   searchByName: jest.fn(),
   getExpiredMedicines: jest.fn(),
-  findLowStock: jest.fn(), 
+  findLowStock: jest.fn(),
   findByCategory: jest.fn(),
   findBySupplier: jest.fn(),
 };

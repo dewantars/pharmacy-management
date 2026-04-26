@@ -52,7 +52,7 @@ export class MedicineController {
   findBySupplier(@Query('supplierId') supplierId: string) {
     return this.medicineService.findBySupplier(supplierId);
   }
-  
+
   // (1) DINA — menambahkan endpoint pencarian obat berdasarkan nama
   @Get('search')
   @Roles('PHARMACIST', 'ADMIN', 'OWNER')
