@@ -32,6 +32,20 @@ export class MedicineController {
     return this.medicineService.findAll(page!, perPage!);
   }
 
+  // (1) DINA — menambahkan endpoint pencarian obat berdasarkan nama
+  @Get('search')
+  @Roles('PHARMACIST', 'ADMIN', 'OWNER')
+  searchByName(@Query('name') name: string) {
+    return this.medicineService.searchByName(name);
+  }
+
+  // (2) DINA - menambahkan endpoint mendapatkan obat yang sudah kedaluwarsa
+  @Get('expired')
+  @Roles('PHARMACIST', 'ADMIN', 'OWNER')
+  getExpiredMedicines() {
+    return this.medicineService.getExpiredMedicines();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.medicineService.findOne(id);

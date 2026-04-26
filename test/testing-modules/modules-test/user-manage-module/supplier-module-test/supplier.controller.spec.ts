@@ -1,3 +1,5 @@
+jest.mock('../../../../../src/common/database/database.service');
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { ExecutionContext } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';

@@ -32,6 +32,13 @@ export class SupplierController {
     return this.supplierService.findAll(page!, perPage!);
   }
 
+  // (3) DINA — menambahkan endpoint pencarian supplier berdasarkan nama
+  @Get('search')
+  @Roles('ADMIN', 'PHARMACIST', 'OWNER')
+  searchByName(@Query('name') name: string) {
+    return this.supplierService.searchByName(name);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.supplierService.findOne(id);

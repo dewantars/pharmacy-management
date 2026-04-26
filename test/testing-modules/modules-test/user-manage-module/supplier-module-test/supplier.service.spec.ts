@@ -1,3 +1,5 @@
+jest.mock('../../../../../src/common/database/database.service');
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
 import { SupplierService } from 'src/module/user-manage-module/supplier-module/supplier.service';
