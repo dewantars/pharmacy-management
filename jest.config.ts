@@ -13,6 +13,7 @@ const config: Config = {
     },
 
     moduleNameMapper: {
+        '^(\\.{1,2}/.*)\\.js$': '$1',
         '^src/(.*)$': '<rootDir>/src/$1',
     },
 
