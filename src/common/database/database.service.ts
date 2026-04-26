@@ -2,13 +2,12 @@ import 'dotenv/config';
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { PrismaPg } from '@prisma/adapter-pg';
 // import { PrismaNeon } from '@prisma/adapter-neon';
-import { PrismaClient } from './generated/prisma/client.js';
+import { PrismaClient } from './generated/prisma/client';
 import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class DatabaseService
   extends PrismaClient
-  implements OnModuleInit, OnModuleDestroy
-{
+  implements OnModuleInit, OnModuleDestroy {
   constructor(private configService: ConfigService) {
     const adapter = new PrismaPg({
       database: configService.get<string>('POSTGRE_DB'),

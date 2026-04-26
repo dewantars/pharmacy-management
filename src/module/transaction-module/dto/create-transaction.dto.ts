@@ -24,6 +24,13 @@ export class CreateTransactionDto {
   cashReceived!: number;
 
   @IsOptional({
+    message: 'discount is optional',
+  })
+  @Type(() => Number)
+  @IsNumber()
+  discount?: number;
+
+  @IsOptional({
     message: 'cashier is optional',
   })
   @IsUUID('all')
