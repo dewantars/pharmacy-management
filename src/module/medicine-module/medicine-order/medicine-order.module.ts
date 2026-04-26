@@ -19,5 +19,6 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
       wildcard: true,
     }),
   ],
+  exports: [MedicineOrderService],
 })
 export class MedicineOrderModule {}

@@ -1,47 +1,30 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Res } from '@nestjs/common';
 import { FinancialReportService } from './financial-report.service.js';
 import { CreateFinancialReportDto } from './dto/create-financial-report.dto.js';
 import { UpdateFinancialReportDto } from './dto/update-financial-report.dto.js';
+import { Response } from 'express';
 
-@Controller('financial-report')
+@Controller()
 export class FinancialReportController {
   constructor(
     private readonly financialReportService: FinancialReportService,
   ) {}
 
-  @Post()
-  create(@Body() createFinancialReportDto: CreateFinancialReportDto) {
-    return this.financialReportService.create(createFinancialReportDto);
+@Get('summary')
+  async getSummary() {
+    return this.financialReportService.getFinancialData();
   }
 
-  @Get()
-  findAll() {
-    return this.financialReportService.findAll();
+  @Get('export/pdf')
+  async exportPdf(@Res() res: Response) {
+    return this.financialReportService.generatePdf(res);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.financialReportService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateFinancialReportDto: UpdateFinancialReportDto,
-  ) {
-    return this.financialReportService.update(+id, updateFinancialReportDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.financialReportService.remove(+id);
+  @Get('export/csv')
+  async exportCsv(@Res() res: Response) {
+    const csv = await this.financialReportService.generateCsv();
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename=financial-report.csv');
+    return res.status(200).send(csv);
   }
 }
