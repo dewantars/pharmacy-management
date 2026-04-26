@@ -1,5 +1,4 @@
-import { ResponseInterceptors
- } from '../response-interceptors.interceptor.js';
+import { ResponseInterceptors } from 'src/common/interceptors/response-interceptors.interceptor';
 
 describe('ResponseInterceptorsInterceptor', () => {
   it('should be defined', () => {
