@@ -29,6 +29,14 @@ type MedicineWithRelations = Prisma.MedicineGetPayload<{
   };
 }>;
 
+// (1) DHEA — menambahkan type untuk low stock medicine dengan relasi category dan supplier
+type MedicineLowStock = Prisma.MedicineGetPayload<{
+  include: {
+    category: true;
+    supplier: true;
+  };
+}>;
+
 @Injectable()
 export class MedicineService {
   private readonly logger = new Logger(MedicineService.name);
@@ -110,6 +118,56 @@ export class MedicineService {
       },
       { page, perPage },
     );
+  }
+
+  // (1) DHEA — menambahkan fitur/function mendapatkan daftar obat dengan stok rendah
+  async findLowStock(threshold = 10): Promise<MedicineLowStock[]> {
+    return this.prisma.medicine.findMany({
+      where: {
+        stock: {
+          lte: threshold,
+        },
+      },
+      include: {
+        category: true,
+        supplier: true,
+      },
+      orderBy: {
+        stock: 'asc',
+      },
+    });
+  }
+
+  // (2) DHEA — menambahkan fitur/function mendapatkan daftar obat berdasarkan kategori
+  async findByCategory(categoryId: string): Promise<Medicine[]> {
+    return this.prisma.medicine.findMany({
+      where: {
+        categoryId: categoryId,
+      },
+      include: {
+        category: true,
+        supplier: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
+
+  // (3) DHEA — menambahkan fitur/function mendapatkan daftar obat berdasarkan supplier
+  async findBySupplier(supplierId: string): Promise<Medicine[]> {
+    return this.prisma.medicine.findMany({
+      where: {
+        supplierId: supplierId,
+      },
+      include: {
+        category: true,
+        supplier: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
   }
 
   async findOne(id: string): Promise<MedicineWithRelations> {
