@@ -1,15 +1,15 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { CreateEmployeeDto } from './dto/create-employee.dto.js';
-import { UpdateEmployeeDto } from './dto/update-employee.dto.js';
-import { DatabaseService } from '../../../common/database/database.service.js';
+import { CreateEmployeeDto } from './dto/create-employee.dto';
+import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { DatabaseService } from '../../../common/database/database.service';
 import {
   PaginatedResult,
   paginator,
-} from '../../../common/helpers/pagination/pagination.js';
+} from '../../../common/helpers/pagination/pagination';
 import {
   Prisma,
   Employee,
-} from '../../../common/database/generated/prisma/client.js';
+} from '../../../common/database/generated/prisma/client';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as bcrypt from 'bcrypt';
@@ -28,7 +28,7 @@ type EmployeeDataWithRelation = Prisma.EmployeeGetPayload<{
 @Injectable()
 export class EmployeeService {
   private logger = new Logger(EmployeeService.name);
-  constructor(private prisma: DatabaseService) {}
+  constructor(private prisma: DatabaseService) { }
 
   async create(
     dto: CreateEmployeeDto,
@@ -133,5 +133,64 @@ export class EmployeeService {
     return this.prisma.employee.findFirst({
       where: { email: email },
     });
+  }
+
+  async getEmployeeSeniority(
+    id: string,
+  ): Promise<{ years: number; months: number; message: string }> {
+    const employee = await this.prisma.employee.findUnique({
+      where: { id },
+      select: { startDate: true, name: true },
+    });
+
+    if (!employee) {
+      throw new NotFoundException(`Employee with ID ${id} not found`);
+    }
+
+    if (!employee.startDate) {
+      throw new NotFoundException(
+        `Start date for employee ${employee.name} is not set`,
+      );
+    }
+
+    const start = new Date(employee.startDate);
+    const now = new Date();
+
+    let years = now.getFullYear() - start.getFullYear();
+    let months = now.getMonth() - start.getMonth();
+
+    // adjust bulan
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+
+    // adjust hari
+    if (now.getDate() < start.getDate()) {
+      months--;
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+    }
+
+    // safety biar gak negatif
+    if (years < 0) years = 0;
+    if (months < 0) months = 0;
+
+    let messageParts: string[] = [];
+
+    if (years > 0) messageParts.push(`${years} tahun`);
+    if (months > 0) messageParts.push(`${months} bulan`);
+
+    if (messageParts.length === 0) {
+      messageParts.push('Kurang dari 1 bulan');
+    }
+
+    return {
+      years,
+      months,
+      message: messageParts.join(' '),
+    };
   }
 }

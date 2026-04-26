@@ -1,19 +1,19 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { CreateMedicineCategoryDto } from './dto/create-medicine-category.dto.js';
-import { UpdateMedicineCategoryDto } from './dto/update-medicine-category.dto.js';
+import { CreateMedicineCategoryDto } from './dto/create-medicine-category.dto';
+import { UpdateMedicineCategoryDto } from './dto/update-medicine-category.dto';
 import {
   PaginatedResult,
   paginator,
-} from '../../../common/helpers/pagination/pagination.js';
+} from '../../../common/helpers/pagination/pagination';
 import {
   MedicineCategory,
   Prisma,
-} from '../../../common/database/generated/prisma/client.js';
-import { DatabaseService } from '../../../common/database/database.service.js';
+} from '../../../common/database/generated/prisma/client';
+import { DatabaseService } from '../../../common/database/database.service';
 import {
   MedicineCategoryCreateInput,
   MedicineCategoryUpdateInput,
-} from '../../../common/database/generated/prisma/models.js';
+} from '../../../common/database/generated/prisma/models';
 
 const paginate = paginator({ perPage: 10, page: 1 });
 
@@ -26,7 +26,7 @@ type MedicineCategoryWithMedicine = Prisma.MedicineCategoryGetPayload<{
 @Injectable()
 export class MedicineCategoryService {
   private readonly logger = new Logger(MedicineCategoryService.name);
-  constructor(private prisma: DatabaseService) {}
+  constructor(private prisma: DatabaseService) { }
 
   async create(
     dto: CreateMedicineCategoryDto,

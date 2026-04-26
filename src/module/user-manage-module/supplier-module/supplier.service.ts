@@ -1,15 +1,15 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { CreateSupplierDto } from './dto/create-supplier.dto.js';
-import { UpdateSupplierDto } from './dto/update-supplier.dto.js';
-import { DatabaseService } from '../../../common/database/database.service.js';
+import { CreateSupplierDto } from './dto/create-supplier.dto';
+import { UpdateSupplierDto } from './dto/update-supplier.dto';
+import { DatabaseService } from '../../../common/database/database.service';
 import {
   Prisma,
   Supplier,
-} from '../../../common/database/generated/prisma/client.js';
+} from '../../../common/database/generated/prisma/client';
 import {
   PaginatedResult,
   paginator,
-} from '../../../common/helpers/pagination/pagination.js';
+} from '../../../common/helpers/pagination/pagination';
 
 const paginate = paginator({ perPage: 10, page: 1 });
 
@@ -22,7 +22,7 @@ type SupplierWithRelation = Prisma.SupplierGetPayload<{
 @Injectable()
 export class SupplierService {
   private readonly logger = new Logger(SupplierService.name);
-  constructor(private prisma: DatabaseService) {}
+  constructor(private prisma: DatabaseService) { }
 
   async create(dto: CreateSupplierDto): Promise<Supplier> {
     return this.prisma.supplier.create({
