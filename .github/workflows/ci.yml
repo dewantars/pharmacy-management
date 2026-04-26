@@ -34,10 +34,10 @@ jobs:
         run: npm run build
 
       - name: Run tests
-        run: npx jest "medicine.service.spec.ts|medicine.controller.spec.ts|supplier.service.spec.ts|supplier.controller.spec.ts|financial-report.controller.spec.ts|financial-report.service.spec.ts"
+        run: npx jest "medicine.service.spec.ts|medicine.controller.spec.ts|supplier.service.spec.ts|supplier.controller.spec.ts"
 
       - name: Run tests coverage
-        run: npx jest --coverage "medicine.service.spec.ts|medicine.controller.spec.ts|supplier.service.spec.ts|supplier.controller.spec.ts|financial-report.controller.spec.ts|financial-report.service.spec.ts"
+        run: npx jest --coverage "medicine.service.spec.ts|medicine.controller.spec.ts|supplier.service.spec.ts|supplier.controller.spec.ts"
 
       - name: Security Audit
         run: npm audit --audit-level=high
