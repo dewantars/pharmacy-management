@@ -1,8 +1,4 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { CreateFinancialReportDto } from './dto/create-financial-report.dto.js';
-import { UpdateFinancialReportDto } from './dto/update-financial-report.dto.js';
-import { MedicineOrderService } from '../../medicine-module/medicine-order/medicine-order.service.js';
-import { TransactionService } from '../../transaction-module/transaction.service.js';
 import { DatabaseService } from '../../../common/database/database.service.js';
 import PDFDocument from 'pdfkit';
 import { createObjectCsvStringifier } from 'csv-writer';
@@ -11,11 +7,7 @@ import { Response } from 'express';
 @Injectable()
 export class FinancialReportService {
   private readonly logger = new Logger(FinancialReportService.name);
-  constructor(
-      private orderService: MedicineOrderService, 
-      private transactionService: TransactionService, 
-      private prisma: DatabaseService
-  ){}
+  constructor(private readonly prisma: DatabaseService){}
   async getFinancialData() {
     const [transactions, orders] = await Promise.all([
       this.prisma.transaction.findMany({

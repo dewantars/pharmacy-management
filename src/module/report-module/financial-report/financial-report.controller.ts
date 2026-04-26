@@ -1,7 +1,5 @@
 import { Controller, Get, Res } from '@nestjs/common';
 import { FinancialReportService } from './financial-report.service.js';
-import { CreateFinancialReportDto } from './dto/create-financial-report.dto.js';
-import { UpdateFinancialReportDto } from './dto/update-financial-report.dto.js';
 import { Response } from 'express';
 
 @Controller()
