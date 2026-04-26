@@ -9,6 +9,9 @@ import { MedicineService } from '../../../../src/module/medicine-module/medicine
 const mockMedicineService = {
   searchByName: jest.fn(),
   getExpiredMedicines: jest.fn(),
+  findLowStock: jest.fn(),
+  findByCategory: jest.fn(),
+  findBySupplier: jest.fn(),
 };
 
 describe('MedicineController', () => {
@@ -46,6 +49,59 @@ describe('MedicineController', () => {
       const result = await controller.getExpiredMedicines();
       expect(mockMedicineService.getExpiredMedicines).toHaveBeenCalled();
       expect(result).toEqual(mockExpired);
+    });
+  });
+
+  // (1) DHEA — test endpoint mendapatkan daftar obat dengan stok rendah
+  describe('findLowStock', () => {
+    it('should call findLowStock with provided threshold', async () => {
+      const mockResult = [{ id: '1', stock: 5 }];
+      mockMedicineService.findLowStock.mockResolvedValue(mockResult);
+
+      const result = await controller.findLowStock('5');
+
+      expect(mockMedicineService.findLowStock).toHaveBeenCalledWith(5);
+      expect(result).toEqual(mockResult);
+    });
+
+    it('should use default threshold 10 when not provided', async () => {
+      const mockResult: any[] = [];
+      mockMedicineService.findLowStock.mockResolvedValue(mockResult);
+
+      const result = await controller.findLowStock(undefined);
+
+      expect(mockMedicineService.findLowStock).toHaveBeenCalledWith(10);
+      expect(result).toEqual(mockResult);
+    });
+  });
+
+  // (2) DHEA — test endpoint mendapatkan daftar obat berdasarkan kategori
+  describe('findByCategory', () => {
+    it('should call findByCategory and return result', async () => {
+      const mockResult = [
+        { id: '1', medicineName: 'Paracetamol', categoryId: 'category-1' },
+      ];
+
+      mockMedicineService.findByCategory.mockResolvedValue(mockResult);
+
+      const result = await controller.findByCategory('category-1');
+
+      expect(mockMedicineService.findByCategory).toHaveBeenCalledWith('category-1');
+      expect(result).toEqual(mockResult);
+    });
+  });
+
+  // (3) DHEA — test endpoint mendapatkan daftar obat berdasarkan supplier
+  describe('findBySupplier', () => {
+    it('should call findBySupplier and return result', async () => {
+      const mockResult = [{ id: '1', supplierId: 'sup-1' }];
+
+      mockMedicineService.findBySupplier.mockResolvedValue(mockResult);
+
+      const result = await controller.findBySupplier('sup-1');
+
+      expect(mockMedicineService.findBySupplier).toHaveBeenCalledWith('sup-1');
+      expect(result).toEqual(mockResult);
     });
   });
 });
