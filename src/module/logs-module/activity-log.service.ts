@@ -30,10 +30,21 @@ export class ActivityLogService {
   async findAll(
     page: number,
     perPage: number,
+    action?: string,
+    employeeId?: string,
+    sort: 'asc' | 'desc' = 'desc',
   ): Promise<PaginatedResult<ActivityLog>> {
     return await paginate(
       this.prisma.activityLog,
-      { orderBy: { createdAt: 'desc' } },
+      {
+        where: {
+          ...(action && {action}),
+          ...(employeeId && {employeeId}),
+        },
+        orderBy: {
+          createdAt: sort,
+        },
+      },
       { page, perPage },
     );
   }
