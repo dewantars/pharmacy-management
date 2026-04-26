@@ -1,18 +1,18 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-import { CreateTransactionDto } from './dto/create-transaction.dto.js';
-import { UpdateTransactionDto } from './dto/update-transaction.dto.js';
-import { DatabaseService } from '../../common/database/database.service.js';
+import { CreateTransactionDto } from './dto/create-transaction.dto';
+import { UpdateTransactionDto } from './dto/update-transaction.dto';
+import { DatabaseService } from '../../common/database/database.service';
 import {
   PaginatedResult,
   paginator,
-} from '../../common/helpers/pagination/pagination.js';
+} from '../../common/helpers/pagination/pagination';
 import {
   Prisma,
   Transaction,
-} from '../../common/database/generated/prisma/client.js';
-import { TransactionUpdateInput } from '../../common/database/generated/prisma/models.js';
-import { MedicineService } from '../medicine-module/medicine/medicine.service.js';
-import { TransactionData } from './interface/transaction-data.interface.js';
+} from '../../common/database/generated/prisma/client';
+import { TransactionUpdateInput } from '../../common/database/generated/prisma/models';
+import { MedicineService } from '../medicine-module/medicine/medicine.service';
+import { TransactionData } from './interface/transaction-data.interface';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
 const paginate = paginator({ perPage: 10, page: 1 });
@@ -28,10 +28,10 @@ export class TransactionService {
     private prisma: DatabaseService,
     private medicineService: MedicineService,
     private event: EventEmitter2,
-  ) {}
+  ) { }
 
   async create(dto: CreateTransactionDto, id?: string): Promise<Transaction> {
-    const { employeeId, medicines, transactionDate } = dto;
+    const { employeeId, medicines, transactionDate, discount } = dto;
 
     return await this.prisma.$transaction(async (tx) => {
       let grandTotal = 0;
@@ -84,6 +84,11 @@ export class TransactionService {
             `Peringatan: Stok obat ${medicine.medicineName} rendah (${updatedMedicine.stock}).`,
           );
         }
+      }
+
+      if (discount) {
+        grandTotal -= discount;
+        if (grandTotal < 0) grandTotal = 0;
       }
 
       if (dto.cashReceived < grandTotal) {
@@ -153,5 +158,28 @@ export class TransactionService {
     return await this.prisma.transaction.delete({
       where: { id: id },
     });
+  }
+
+  async calculateTotalRevenue(startDate?: Date, endDate?: Date): Promise<number> {
+    const whereClause: Prisma.TransactionWhereInput = {};
+
+    if (startDate || endDate) {
+      whereClause.transactionDate = {};
+      if (startDate) {
+        whereClause.transactionDate.gte = startDate;
+      }
+      if (endDate) {
+        whereClause.transactionDate.lte = endDate;
+      }
+    }
+
+    const result = await this.prisma.transaction.aggregate({
+      _sum: {
+        totalPrice: true,
+      },
+      where: whereClause,
+    });
+
+    return result._sum.totalPrice || 0;
   }
 }

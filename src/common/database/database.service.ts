@@ -7,8 +7,7 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class DatabaseService
   extends PrismaClient
-  implements OnModuleInit, OnModuleDestroy
-{
+  implements OnModuleInit, OnModuleDestroy {
   constructor(private configService: ConfigService) {
     const adapter = new PrismaPg({
       database: configService.get<string>('POSTGRE_DB'),

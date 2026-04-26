@@ -1,23 +1,23 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { CreateMedicineDto } from './dto/create-medicine.dto.js';
-import { UpdateMedicineDto } from './dto//update-medicine.dto.js';
+import { CreateMedicineDto } from './dto/create-medicine.dto';
+import { UpdateMedicineDto } from './dto/update-medicine.dto';
 import {
   PaginatedResult,
   paginator,
-} from '../../../common/helpers/pagination/pagination.js';
+} from '../../../common/helpers/pagination/pagination';
 import {
   Medicine,
   Prisma,
-} from '../../../common/database/generated/prisma/client.js';
-import { DatabaseService } from '../../../common/database/database.service.js';
+} from '../../../common/database/generated/prisma/client';
+import { DatabaseService } from '../../../common/database/database.service';
 import {
   MedicineCreateInput,
   MedicineUpdateInput,
-} from '../../../common/database/generated/prisma/models.js';
-import { MedicineCategoryService } from '../medicine-category/medicine-category.service.js';
+} from '../../../common/database/generated/prisma/models';
+import { MedicineCategoryService } from '../medicine-category/medicine-category.service';
 
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { SupplierService } from '../../user-manage-module/supplier-module/supplier.service.js';
+import { SupplierService } from '../../user-manage-module/supplier-module/supplier.service';
 
 const paginate = paginator({ perPage: 10, page: 1 });
 
@@ -37,7 +37,7 @@ export class MedicineService {
     private medicineCategoryService: MedicineCategoryService,
     private supplierService: SupplierService,
     private event: EventEmitter2,
-  ) {}
+  ) { }
 
   async create(
     dto: CreateMedicineDto,
