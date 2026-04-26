@@ -6,9 +6,9 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ActivityLogService } from './activity-log.service.js';
+import { ActivityLogService } from './activity-log.service';
 import { AuthGuard } from '@nestjs/passport';
-import { Roles } from '../../common/security/guards/roles.decorator.js';
+import { Roles } from '../../common/security/guards/roles.decorator';
 
 @Controller()
 @UseGuards(AuthGuard('jwt'))
