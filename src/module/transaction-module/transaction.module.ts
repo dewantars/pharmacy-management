@@ -20,6 +20,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     }),
   ],
   controllers: [TransactionController],
-  providers: [TransactionService, DatabaseService],
+  providers: [TransactionService,DatabaseService],
+  exports: [TransactionService],
 })
 export class TransactionModule {}

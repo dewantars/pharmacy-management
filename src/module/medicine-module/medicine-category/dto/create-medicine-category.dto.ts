@@ -4,11 +4,11 @@ export class CreateMedicineCategoryDto {
   @IsNotEmpty({
     message: 'medicine category name is required',
   })
-  readonly categoryName: string;
+  readonly categoryName!: string;
 
   @IsOptional()
   @MinLength(7, {
     message: 'medicine category description must be greater than 7 character',
   })
-  readonly description: string;
+  readonly description!: string;
 }

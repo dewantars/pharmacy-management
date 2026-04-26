@@ -8,5 +8,6 @@ import { DatabaseService } from '../../common/database/database.service.js';
   controllers: [ActivityLogController],
   providers: [ActivityLogService, DatabaseService],
   imports: [DatabaseModule],
+  exports: [ActivityLogService],
 })
 export class ActivityLogModule {}
