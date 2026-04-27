@@ -5,13 +5,27 @@ import { OrderDetailService } from 'src/module/medicine-module/medicine-order/or
 describe('OrderDetailController', () => {
   let controller: OrderDetailController;
 
+  const mockOrderDetailService = {
+    findAll: jest.fn(),
+    delete: jest.fn(),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [OrderDetailController],
-      providers: [OrderDetailService],
+      providers: [
+        {
+          provide: OrderDetailService,
+          useValue: mockOrderDetailService,
+        },
+      ],
     }).compile();
 
     controller = module.get<OrderDetailController>(OrderDetailController);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it('should be defined', () => {
