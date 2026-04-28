@@ -1,15 +1,30 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ActivityTrackingInterceptor } from 'src/common/interceptors/activity-tracking.interceptor';
+import { ActivityLogService } from 'src/module/logs-module/activity-log.service';
 
 describe('ActivityTrackingInterceptor', () => {
   let interceptor: ActivityTrackingInterceptor;
 
+  const mockActivityLogService = {
+    create: jest.fn().mockResolvedValue(undefined),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ActivityTrackingInterceptor],
+      providers: [
+        ActivityTrackingInterceptor,
+        {
+          provide: ActivityLogService,
+          useValue: mockActivityLogService,
+        },
+      ],
     }).compile();
 
     interceptor = module.get<ActivityTrackingInterceptor>(ActivityTrackingInterceptor);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it('should be defined', () => {
@@ -24,6 +39,7 @@ describe('ActivityTrackingInterceptor', () => {
           method: 'POST',
           url: '/api/test',
           body: { key: 'value' },
+          params: {},
         }),
         getResponse: () => ({}),
       }),
@@ -32,17 +48,14 @@ describe('ActivityTrackingInterceptor', () => {
     };
 
     const mockCallHandler: any = {
-      handle: jest.fn().mockResolvedValue({ data: 'response' }),
+      handle: jest.fn().mockReturnValue({
+        pipe: jest.fn().mockReturnValue(Promise.resolve({ data: 'response' })),
+      }),
     };
 
-    // Note: This is a simplified test. In a real scenario, you would mock DatabaseService
-    // to verify that activityLogs.create is called with the correct data.
     await interceptor.intercept(mockExecutionContext, mockCallHandler);
 
-    // Verify handle was called
     expect(mockCallHandler.handle).toHaveBeenCalled();
-
-    // You could add more specific checks here if you mock DatabaseService
   });
 
   it('should handle anonymous requests without user ID', async () => {
@@ -52,6 +65,7 @@ describe('ActivityTrackingInterceptor', () => {
           method: 'GET',
           url: '/api/public',
           body: {},
+          params: {},
         }),
         getResponse: () => ({}),
       }),
@@ -60,7 +74,9 @@ describe('ActivityTrackingInterceptor', () => {
     };
 
     const mockCallHandler: any = {
-      handle: jest.fn().mockResolvedValue({ data: 'public response' }),
+      handle: jest.fn().mockReturnValue({
+        pipe: jest.fn().mockReturnValue(Promise.resolve({ data: 'public response' })),
+      }),
     };
 
     await interceptor.intercept(mockExecutionContext, mockCallHandler);
