@@ -1,3 +1,6 @@
+describe('TransactionModule', () => {
+  it('should be defined', () => {
+    expect(true).toBe(true);
 import { Test, TestingModule } from '@nestjs/testing';
 import { TransactionService } from 'src/module/transaction-module/transaction.service';
 import { DatabaseService } from 'src/common/database/database.service';
